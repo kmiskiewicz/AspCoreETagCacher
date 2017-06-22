@@ -7,3 +7,5 @@
 /AspCoreETagCacher/SampleWebApp/bin
 /AspCoreETagCacher/SampleWebApp/obj
 /vs
+/.vs/etag/v15
+/.vs/slnx.sqlite
