@@ -7,16 +7,16 @@ namespace AspCoreETagCacher.Middleware
 {
 
     /// <summary>
-    ///Purpose of CacheMiddleware is to intercept request, 
+    ///Purpose of CacheETagMiddleware is to intercept request, 
     ///and provide custom stream to which further middlewares could write (and read).
     ///When the middleware invocation process will return to CacheMiddleware,
     ///this stream's content will be copied to original response stream. 
     ///</summary>
-    public class CacheMiddleware
+    public class CacheETagMiddleware
     {
         protected RequestDelegate NextMiddleware;
 
-        public CacheMiddleware(RequestDelegate nextMiddleware)
+        public CacheETagMiddleware(RequestDelegate nextMiddleware)
         {
             NextMiddleware = nextMiddleware;
         }

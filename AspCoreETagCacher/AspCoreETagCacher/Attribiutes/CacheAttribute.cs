@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Net.Http.Headers;
-using NuGet.Protocol;
+using Newtonsoft.Json;
+
 
 namespace AspCoreETagCacher.Attribiutes
 {
@@ -206,12 +207,14 @@ namespace AspCoreETagCacher.Attribiutes
         {
             var req = context.HttpContext.Request;
             var resp = context.HttpContext.Response;
-            if (!ValidateMethod(req, resp))
+            if (!ValidateMethod(req, resp) || context.Result == null)
             {
                 return;
             }
+          
+            
 
-            var eTag = ETagGenerator.GetETag(context.HttpContext.Request, context.Result?.ToJson());
+            var eTag = ETagGenerator.GetETag(context.HttpContext.Request, JsonConvert.SerializeObject(context.Result));
             SetCacheHeaderForClientSideCaching(resp, eTag);
             if (CacheLocation == CacheLocation.Client)
             {

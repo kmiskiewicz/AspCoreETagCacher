@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
-using Jil;
 using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace AspCoreETagCacher.Services
 {
-    public class RedisCacheService : ICacheRedisService 
+    public class RedisCacheService : ICacheRedisService
     {
         private readonly IDistributedCache _cache;
         private static int DefaultCacheDuration => 60;
@@ -23,7 +23,7 @@ namespace AspCoreETagCacher.Services
         public void Store(string key, object content, int duration)
         {
             var s = content as string;
-            var toStore = s ?? JSON.Serialize(content);
+            var toStore = s ?? JsonConvert.SerializeObject(content); // JSON.Serialize(content);
 
             duration = duration <= 0 ? DefaultCacheDuration : duration;
             _cache.Set(key, Encoding.UTF8.GetBytes(toStore), new DistributedCacheEntryOptions()
@@ -46,7 +46,7 @@ namespace AspCoreETagCacher.Services
                 return str as T;
             }
 
-            return JSON.Deserialize<T>(str);
+            return JsonConvert.DeserializeObject<T>(str); // JSON.Deserialize<T>(str);
         }
 
         public void Remove(string key)
